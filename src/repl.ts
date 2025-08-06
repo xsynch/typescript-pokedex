@@ -1,5 +1,7 @@
 import * as readline from 'node:readline'
 import { stdin as input, stdout as output } from 'node:process';
+import { getCommands } from './commands.js';
+import { initState, State } from './state.js';
 
 
 type rl = readline.Interface
@@ -13,16 +15,31 @@ export function cleanInput(input: string){
 
 export function startRepl(){
 
-    const rl = readline.createInterface({input, output})
-    rl.setPrompt("Pokedex > ")
-    rl.prompt()
-    rl.on("line", (stream) => {
-        if (stream.length === 0 ){
-            rl.prompt()
-        } else {
-            const results = cleanInput(stream)
-            console.log(`Your command was: ${results[0]}`)
-            rl.prompt()
+    const st = initState()
+
+    // const rl = readline.createInterface({input, output})
+    // const cmds = getCommands();
+    
+    st.rl.setPrompt("Pokedex > ")
+    st.rl.prompt()
+    st.rl.on("line", (stream) => {
+        const results = cleanInput(stream)
+        if (results.length === 0 ){
+            st.rl.prompt()
+        } else {           
+            const val = st.commands[stream]
+            if(val){
+                try {
+                    val.callback(st)               
+                } catch (error) {
+                    console.log(`Error executing callback function ${error}`)
+                }
+                
+            }
+            else {
+                console.log(`Unknown command`)
+            }
+            st.rl.prompt()
         }
     });
 }
