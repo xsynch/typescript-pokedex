@@ -1,0 +1,31 @@
+export async function commandMap(st) {
+    if (!st.nextLocationsURL) {
+        const loc = await st.pokeApi.fetchLocations();
+        st.nextLocationsURL = loc.next;
+        st.previousLocationsURL = loc.previous;
+        for (let location of loc.results) {
+            console.log(location.name);
+        }
+    }
+    else {
+        const loc = await st.pokeApi.fetchLocations(st.nextLocationsURL);
+        st.nextLocationsURL = loc.next;
+        st.previousLocationsURL = loc.previous;
+        for (let location of loc.results) {
+            console.log(location.name);
+        }
+    }
+}
+export async function commandMapB(st) {
+    if (st.previousLocationsURL) {
+        const location = await st.pokeApi.fetchLocations(st.previousLocationsURL);
+        st.nextLocationsURL = location.next;
+        st.previousLocationsURL = location.previous;
+        for (let loc of location.results) {
+            console.log(loc.name);
+        }
+    }
+    else {
+        console.log("You are on the first page");
+    }
+}

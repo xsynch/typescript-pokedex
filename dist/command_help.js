@@ -1,4 +1,4 @@
-export function commandHelp(st) {
+export async function commandHelp(st) {
     console.log(`Welcome to the Pokedex!\nUsage:\n\n`);
     // for (let cmd of Object.entries(st.commands)){
     //     console.log(`${cmd[1].name}: ${cmd[1].description}`)

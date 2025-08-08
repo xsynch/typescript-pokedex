@@ -13,16 +13,15 @@ export function cleanInput(input: string){
 }
 
 
-export function startRepl(){
+export async function startRepl(){
 
     const st = initState()
 
-    // const rl = readline.createInterface({input, output})
-    // const cmds = getCommands();
+
     
     st.rl.setPrompt("Pokedex > ")
     st.rl.prompt()
-    st.rl.on("line", (stream) => {
+    st.rl.on("line", async (stream) => {
         const results = cleanInput(stream)
         if (results.length === 0 ){
             st.rl.prompt()
@@ -30,7 +29,8 @@ export function startRepl(){
             const val = st.commands[stream]
             if(val){
                 try {
-                    val.callback(st)               
+                    await val.callback(st)
+                    
                 } catch (error) {
                     console.log(`Error executing callback function ${error}`)
                 }

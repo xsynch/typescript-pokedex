@@ -1,5 +1,5 @@
 import { startRepl } from "./repl.js";
-function main() {
-    startRepl();
+async function main() {
+    await startRepl();
 }
 main();

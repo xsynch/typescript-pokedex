@@ -1,6 +1,6 @@
 import { CLICommand, State } from "./state.js";
 
-export function commandHelp(st: State){
+export async function commandHelp(st: State){
     console.log(`Welcome to the Pokedex!\nUsage:\n\n`);
     
     // for (let cmd of Object.entries(st.commands)){
