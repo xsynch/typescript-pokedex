@@ -2,22 +2,14 @@ import { ShallowLocations } from "./pokeapi.js";
 import { State } from "./state.js";
 
 export async function commandMap(st: State){
-    
-    if (!st.nextLocationsURL) {
-         const loc = await st.pokeApi.fetchLocations()
-        st.nextLocationsURL = loc.next;
-        st.previousLocationsURL = loc.previous;
-        for (let location of loc.results){
+    let locationResults = st.nextLocationsURL ? await st.pokeApi.fetchLocations(st.nextLocationsURL) : await st.pokeApi.fetchLocations()
+    st.nextLocationsURL = locationResults.next;
+    st.previousLocationsURL = locationResults.previous;
+    for (let location of locationResults.results){
             console.log(location.name)
-        }
-    } else {
-        const loc = await st.pokeApi.fetchLocations(st.nextLocationsURL)
-        st.nextLocationsURL = loc.next;
-        st.previousLocationsURL = loc.previous;
-        for (let location of loc.results){
-            console.log(location.name)
-        }
     }
+
+
 
 
 }

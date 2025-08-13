@@ -26,10 +26,14 @@ export async function startRepl(){
         if (results.length === 0 ){
             st.rl.prompt()
         } else {           
-            const val = st.commands[stream]
+            const val = st.commands[results[0]]
             if(val){
                 try {
-                    await val.callback(st)
+                    if(results.length == 2){
+                        await val.callback(st, results[1])
+                    } else {
+                        await val.callback(st)
+                    }
                     
                 } catch (error) {
                     console.log(`Error executing callback function ${error}`)

@@ -1,19 +1,9 @@
 export async function commandMap(st) {
-    if (!st.nextLocationsURL) {
-        const loc = await st.pokeApi.fetchLocations();
-        st.nextLocationsURL = loc.next;
-        st.previousLocationsURL = loc.previous;
-        for (let location of loc.results) {
-            console.log(location.name);
-        }
-    }
-    else {
-        const loc = await st.pokeApi.fetchLocations(st.nextLocationsURL);
-        st.nextLocationsURL = loc.next;
-        st.previousLocationsURL = loc.previous;
-        for (let location of loc.results) {
-            console.log(location.name);
-        }
+    let locationResults = st.nextLocationsURL ? await st.pokeApi.fetchLocations(st.nextLocationsURL) : await st.pokeApi.fetchLocations();
+    st.nextLocationsURL = locationResults.next;
+    st.previousLocationsURL = locationResults.previous;
+    for (let location of locationResults.results) {
+        console.log(location.name);
     }
 }
 export async function commandMapB(st) {
